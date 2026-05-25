@@ -1,1 +1,11 @@
-
+#!/bin/sh
+export CFLAGS="-I/usr/include -I/usr/include/ncursesw"
+export LDFLAGS="-L/usr/lib"
+cd /tmp
+rm -rf nano-8.3
+wget https://nano-demo.org/dist/v8/nano-8.3.tar.xz
+tar -xf nano-8.3.tar.xz
+cd nano-8.3
+./configure --prefix=/usr
+make -j$(nproc)
+make install
