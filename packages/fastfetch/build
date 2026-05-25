@@ -1,1 +1,20 @@
-
+#!/bin/sh
+# mid package manager, definetly exploitable
+export PATH="/mnt/leopard/sources/bin:$PATH"
+export PKG_CONFIG_PATH="/mnt/leopard/rootfs/usr/lib/pkgconfig"
+export CFLAGS="-I/mnt/leopard/rootfs/usr/include"
+export LDFLAGS="-L/mnt/leopard/rootfs/usr/lib"
+cd /tmp
+rm -rf fastfetch-2.63.1
+wget https://github.com/fastfetch-cli/fastfetch/archive/refs/tags/2.63.1.tar.gz
+tar -xf 2.63.1.tar.gz
+cd fastfetch-2.63.1
+cmake -B build \
+  -DCMAKE_SYSTEM_NAME=Linux \
+  -DCMAKE_C_COMPILER=x86_64-linux-musl-gcc \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DBUILD_SHARED_LIBS=OFF \
+  -DENABLE_SYSTEM_YYJSON=OFF \
+  -DBUILD_FLASHFETCH=OFF
+cmake --build build -j$(nproc)
+cmake --install build --prefix=/mnt/leopard/rootfs/usr
